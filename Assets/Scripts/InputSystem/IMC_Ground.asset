@@ -21,6 +21,5 @@ MonoBehaviour:
     Name: Down
   - Key: 100
     Name: Right
-  keyNameMappingOne:
-    Key: 0
-    Name: 
+  - Key: 32
+    Name: Jump

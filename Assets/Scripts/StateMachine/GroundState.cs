@@ -6,7 +6,7 @@ using UnityEngine;
 public class GroundState : StateMachineNode
 {
 
-    public PlayerMovementScript script;
+    public PlayerMovementScript pms;
     public InputMappingContext IMC;
 
     public void ConditionUpdate(object invoker)
@@ -20,7 +20,7 @@ public class GroundState : StateMachineNode
     {
         if (invoker == null) return;
         if (invoker is not PlayerMovementScript) return;
-        script = (PlayerMovementScript)invoker;
+        pms = (PlayerMovementScript)invoker;
         IMC = InputBufferManager.instance.GroundIMC;
         InputBufferManager.SetMappingContext(IMC);
 
@@ -40,10 +40,23 @@ public class GroundState : StateMachineNode
     }
 
     public void PhysicsTick(object invoker)
-    {
-        if(InputBuffer.GetKeyDown("Up"))Debug.Log("Forward");
-        if(InputBuffer.GetKeyDown("Down"))Debug.Log("Down");
-        if(InputBuffer.GetKeyDown("Right"))Debug.Log("Right");
-        if(InputBuffer.GetKeyDown("Left"))Debug.Log("Left");
+    {   
+        Rigidbody rb = pms.rigidbody;
+        float forwardInput = InputBuffer.GetKey("Up")  ? 1 : 0;
+        float downInput = InputBuffer.GetKey("Down")   ? 1 : 0;
+        float rightInput = InputBuffer.GetKey("Right") ? 1 : 0;
+        float leftInput = InputBuffer.GetKey("Left")   ? 1 : 0;
+        float fwd = forwardInput - downInput;
+        float leftright = rightInput - leftInput;
+        Vector3 IntendedVelocity = fwd*pms.meshTransform.forward + leftright*pms.meshTransform.right;
+        rb.velocity = new Vector3(IntendedVelocity.x, rb.velocity.y, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
+        
+        bool jumpInput = InputBuffer.GetKeyDown("Jump");
+
+        if (jumpInput)
+        {
+            Debug.Log("Jump");
+            //Switch state to IN AIR
+        }
     }
 }

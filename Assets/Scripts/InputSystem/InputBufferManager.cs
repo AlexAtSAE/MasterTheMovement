@@ -23,7 +23,8 @@ public class InputBufferManager : MonoBehaviour
         if(mappingContext == null) return;
         foreach (var mapping in mappingContext.keyNameMapping)
         {
-            if(Input.GetKey(mapping.Key)) InputBuffer.SetKeyDown(mapping.Name,true);
+            if(Input.GetKey(mapping.Key)) InputBuffer.SetKey(mapping.Name,true);
+            if(Input.GetKeyDown(mapping.Key)) InputBuffer.SetKeyDown(mapping.Name,true);
         }
     }
 
@@ -37,11 +38,11 @@ public class InputBufferManager : MonoBehaviour
         Debug.Log("SetMappingContext");
         if (instance == null)
         {
-            Debug.Log("instance is null");
+            Debug.Log("mapping context is null");
             return;
         }
         foreach (var mapping in mappingContext.keyNameMapping)
-            Debug.Log(mapping.Name);
+            Debug.Log("Reading "+mapping.Name+ " Key: "+mapping.Key);
         instance.mappingContext = mappingContext;
     }
 }

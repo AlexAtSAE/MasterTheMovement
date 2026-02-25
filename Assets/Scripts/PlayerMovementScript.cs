@@ -7,6 +7,10 @@ public class PlayerMovementScript : MonoBehaviour
 {
     public Rigidbody rigidbody { get; private set; }
     public StateMachineNode currentState;
+    public Transform meshTransform;
+    
+    public JumpSettings jumpSettings;
+    public MovementSettings movementSettings;
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
@@ -23,4 +27,16 @@ public class PlayerMovementScript : MonoBehaviour
         currentState.PhysicsTick(this);
         currentState.ConditionUpdate(this);
     }
+}
+
+[System.Serializable]
+public struct JumpSettings
+{
+    public float jumpForce;
+}
+
+[System.Serializable]
+public struct MovementSettings
+{
+    public float movementSpeed;
 }
