@@ -6,7 +6,11 @@ public class NullState : StateMachineNode
 {
     public void ConditionUpdate(object invoker)
     {
-
+        if (!(invoker is PlayerMovementScript)) return;
+        PlayerMovementScript pms = (PlayerMovementScript)invoker;
+        ExitState(pms, this);
+        pms.currentState = new GroundState();
+        pms.currentState.EnterState(pms, this);
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)

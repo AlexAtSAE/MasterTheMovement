@@ -1,13 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovementScript : MonoBehaviour
 {
-    public StateMachineNode currentState = new NullState();
+    public Rigidbody rigidbody { get; private set; }
+    public StateMachineNode currentState;
     void Start()
     {
-        
+        rigidbody = GetComponent<Rigidbody>();
+        currentState = new NullState();
+        currentState.EnterState(this,currentState);
     }
 
     void Update()

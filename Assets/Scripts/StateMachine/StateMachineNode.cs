@@ -16,4 +16,6 @@ public interface StateMachineNode
 
     //Call exit state to change state
     public void ConditionUpdate(object invoker);
+    
+
 }
