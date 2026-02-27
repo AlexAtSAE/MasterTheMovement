@@ -23,3 +23,5 @@ MonoBehaviour:
     Name: Right
   - Key: 32
     Name: Jump
+  - Key: 304
+    Name: Dash

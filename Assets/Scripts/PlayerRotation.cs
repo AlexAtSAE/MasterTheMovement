@@ -13,6 +13,7 @@ public class PlayerRotation : MonoBehaviour
     private void Start()
     {
         pms= GetComponent<PlayerMovementScript>();
+        LockCamera();
     }
 
     void Update()
@@ -37,11 +38,10 @@ public class PlayerRotation : MonoBehaviour
     {
         
         Vector2 cameraInputValue = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
-        cameraAnglePitch += cameraInputValue.x * mouseSensitivity.x;
-        cameraAngleYaw += cameraInputValue.y * mouseSensitivity.y;
-        Debug.Log(cameraAngleYaw);
-        cameraAngleYaw = Mathf.Clamp(cameraAngleYaw, -75f, 80f);
-        cam.rotation = Quaternion.Euler(-cameraAngleYaw, cameraAnglePitch, 0);
-        pms.meshTransform.rotation = Quaternion.Euler(0,cameraAnglePitch, 0);
+        cameraAnglePitch += cameraInputValue.y * mouseSensitivity.y;
+        cameraAngleYaw += cameraInputValue.x * mouseSensitivity.x;
+        cameraAnglePitch = Mathf.Clamp(cameraAnglePitch, -75f, 80f);
+        cam.rotation = Quaternion.Euler(-cameraAnglePitch, cameraAngleYaw, 0);
+        pms.transform.rotation = Quaternion.Euler(0, cameraAngleYaw, 0);
     }
 }

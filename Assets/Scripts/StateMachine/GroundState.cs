@@ -1,3 +1,4 @@
+using NUnit.Framework.Constraints;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -6,14 +7,17 @@ using UnityEngine;
 public class GroundState : StateMachineNode
 {
 
-    public PlayerMovementScript pms;
-    public InputMappingContext IMC;
+    private PlayerMovementScript pms;
+    private InputMappingContext IMC;
 
     public void ConditionUpdate(object invoker)
     {
         if (invoker == null) return;
         if (invoker is not PlayerMovementScript) return;
 
+        if (InputBuffer.GetKeyDown("Jump")) pms.ChangeState(new InAirState());
+        if (InputBuffer.GetKeyDown("Dash")) pms.ChangeState(new DashState());
+        
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)
@@ -30,7 +34,6 @@ public class GroundState : StateMachineNode
     {
         if (invoker == null) return;
         if (invoker is not PlayerMovementScript) return;
-        
 
     }
 
@@ -48,15 +51,11 @@ public class GroundState : StateMachineNode
         float leftInput = InputBuffer.GetKey("Left")   ? 1 : 0;
         float fwd = forwardInput - downInput;
         float leftright = rightInput - leftInput;
-        Vector3 IntendedVelocity = fwd*pms.meshTransform.forward + leftright*pms.meshTransform.right;
-        rb.velocity = new Vector3(IntendedVelocity.x, rb.velocity.y, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
-        
+        Vector3 IntendedVelocity = fwd*pms.transform.forward + leftright*pms.transform.right;
+        rb.linearVelocity = new Vector3(IntendedVelocity.x, rb.linearVelocity.y, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
         bool jumpInput = InputBuffer.GetKeyDown("Jump");
+        if (jumpInput) rb.linearVelocity = rb.linearVelocity + new Vector3(0, pms.jumpSettings.jumpForce,0);
 
-        if (jumpInput)
-        {
-            Debug.Log("Jump");
-            //Switch state to IN AIR
-        }
     }
+    public StateMachineNode Clone() => new GroundState();
 }

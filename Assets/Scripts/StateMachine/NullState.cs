@@ -32,4 +32,5 @@ public class NullState : StateMachineNode
     {
         
     }
+    public StateMachineNode Clone() => new NullState();
 }
