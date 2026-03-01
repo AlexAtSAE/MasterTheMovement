@@ -55,19 +55,26 @@ public class GroundState : StateMachineNode
         float leftright = rightInput - leftInput;
         Vector3 IntendedVelocity = fwd*pms.transform.forward + leftright*pms.transform.right;
         rb.linearVelocity = new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
+
+
         bool jumpInput = InputBuffer.GetKeyDown("Jump");
         if (jumpInput) rb.linearVelocity = rb.linearVelocity + new Vector3(0, pms.jumpSettings.jumpForce,0);
-        
 
     }
     private bool onGround = true;
+    private Vector3 Ground = new Vector3();
 
     private void GroundCheck()
     {
+        bool ledgeRaycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.25f);
+        if (!ledgeRaycastResult) { onGround = false; return; }
+
         Ray ray = new Ray(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.05f);
         RaycastHit hit;
         bool raycastResult = Physics.Raycast(ray, out hit);
-        if (!raycastResult) onGround = false;
+        Ground = hit.point;
+
+        
     }
     public StateMachineNode Clone() => new GroundState();
 }
