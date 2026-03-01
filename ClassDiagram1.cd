@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="PlayerMovementScript">
+    <Position X="11.25" Y="2" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAQIAIAAAiAABAAAIAAAAAACIAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Assets\Scripts\PlayerMovementScript.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NullState" BaseTypeListCollapsed="true">
+    <Position X="5.25" Y="6.25" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAIAQAAAAAAAAAAIAIAAAABA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\NullState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="GroundState" BaseTypeListCollapsed="true">
+    <Position X="5" Y="3" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAIAAAAAAAQAIAQAAAAAAAAAAIAIAAAABA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\GroundState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="DashState" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3" Width="4.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAIAAAAAAAQAIAQAABIAAAAAAIAIAAAABA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\DashState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="InAirState" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="6.25" Width="4.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAQAAIAAAAgAAQAIAQAAAAAAAAAAIAIAAAABA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\InAirState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="JumpSettings">
+    <Position X="14.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\PlayerMovementScript.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="MovementSettings">
+    <Position X="16.5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\PlayerMovementScript.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="AirMovementSettings">
+    <Position X="16.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAAAAAAAAAAEAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\PlayerMovementScript.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="DashSettings">
+    <Position X="14.75" Y="3.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAQQAAAAAAAAAAAgAAA=</HashCode>
+      <FileName>Assets\Scripts\PlayerMovementScript.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="StateMachineNode">
+    <Position X="2" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAAAAAAAAAAIAQAAAAAAAAAAIAIAAAABA=</HashCode>
+      <FileName>Assets\Scripts\StateMachine\StateMachineNode.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

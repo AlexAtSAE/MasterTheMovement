@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class NullState : StateMachineNode
 {
+    public string Name { get { return "NullState"; } }
     public void ConditionUpdate(object invoker)
     {
         if (!(invoker is PlayerMovementScript)) return;

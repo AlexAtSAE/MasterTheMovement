@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class GroundState : StateMachineNode
 {
-
+    public string Name { get { return "Ground"; } }
     private PlayerMovementScript pms;
     private InputMappingContext IMC;
 
@@ -15,9 +15,10 @@ public class GroundState : StateMachineNode
         if (invoker == null) return;
         if (invoker is not PlayerMovementScript) return;
 
-        if (InputBuffer.GetKeyDown("Jump")) pms.ChangeState(new InAirState());
+        if (InputBuffer.GetKeyDown("Jump") || !onGround) pms.ChangeState(new InAirState());
         if (InputBuffer.GetKeyDown("Dash")) pms.ChangeState(new DashState());
         
+
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)
@@ -45,6 +46,7 @@ public class GroundState : StateMachineNode
     public void PhysicsTick(object invoker)
     {   
         Rigidbody rb = pms.rigidbody;
+        GroundCheck();
         float forwardInput = InputBuffer.GetKey("Up")  ? 1 : 0;
         float downInput = InputBuffer.GetKey("Down")   ? 1 : 0;
         float rightInput = InputBuffer.GetKey("Right") ? 1 : 0;
@@ -52,10 +54,20 @@ public class GroundState : StateMachineNode
         float fwd = forwardInput - downInput;
         float leftright = rightInput - leftInput;
         Vector3 IntendedVelocity = fwd*pms.transform.forward + leftright*pms.transform.right;
-        rb.linearVelocity = new Vector3(IntendedVelocity.x, rb.linearVelocity.y, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
+        rb.linearVelocity = new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
         bool jumpInput = InputBuffer.GetKeyDown("Jump");
         if (jumpInput) rb.linearVelocity = rb.linearVelocity + new Vector3(0, pms.jumpSettings.jumpForce,0);
+        
 
+    }
+    private bool onGround = true;
+
+    private void GroundCheck()
+    {
+        Ray ray = new Ray(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.05f);
+        RaycastHit hit;
+        bool raycastResult = Physics.Raycast(ray, out hit);
+        if (!raycastResult) onGround = false;
     }
     public StateMachineNode Clone() => new GroundState();
 }

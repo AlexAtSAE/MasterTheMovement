@@ -3,6 +3,7 @@ using UnityEngine.XR;
 
 public class InAirState : StateMachineNode
 {
+    public string Name { get { return "InAir"; }}
     private PlayerMovementScript pms;
     private InputMappingContext IMC;
   
@@ -22,7 +23,6 @@ public class InAirState : StateMachineNode
         pms = (PlayerMovementScript)invoker;
         IMC = InputBufferManager.instance.GroundIMC;
         InputBufferManager.SetMappingContext(IMC);
-        Debug.Log("Entered air state");
     }
 
     public void ExitState(object invoker, StateMachineNode toState)
@@ -32,27 +32,32 @@ public class InAirState : StateMachineNode
 
 
     }
+    float timeOnWall = 0;
 
     public void FrameTick(object invoker)
     {
-
+        if (onWall) timeOnWall += Time.deltaTime;
     }
 
     public void PhysicsTick(object invoker)
     {
-
         
+
+
         float forwardInput = InputBuffer.GetKey("Up") ? 1 : 0;
         float downInput = InputBuffer.GetKey("Down") ? 1 : 0;
         float rightInput = InputBuffer.GetKey("Right") ? 1 : 0;
         float leftInput = InputBuffer.GetKey("Left") ? 1 : 0;
         float fwd = forwardInput - downInput;
         float leftright = rightInput - leftInput;
-        Vector3 IntendedVelocity = fwd * pms.transform.forward + leftright * pms.transform.right;
-        IntendedVelocity = IntendedVelocity.normalized * pms.airMovementSettings.movementSpeed; //the Input from the player
+        Vector3 IntendedDirection = fwd * pms.transform.forward + leftright * pms.transform.right;
+
+        Vector3 IntendedVelocity = IntendedDirection.normalized * pms.airMovementSettings.movementSpeed; //the Input from the player
         pms.rigidbody.linearVelocity += new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z);
-        pms.rigidbody.linearVelocity += Vector3.down*pms.airMovementSettings.gravity;
-        Debug.Log(pms.rigidbody.linearVelocity);
+
+        if(pms.rigidbody.linearVelocity.y<0)WallCheck(IntendedDirection);
+        if(onWall) pms.rigidbody.linearVelocity += Vector3.down*pms.airMovementSettings.wallGravity * WallGravityCurve(timeOnWall);
+        else pms.rigidbody.linearVelocity += Vector3.down * pms.airMovementSettings.gravity;
         GroundCheck();
 
 
@@ -62,8 +67,21 @@ public class InAirState : StateMachineNode
     private bool onGround = false;
     private void GroundCheck()
     {
-        bool raycastResult = Physics.Raycast(pms.airMovementSettings.RaycastOrigin.position,Vector3.down,0.01f);
+        bool raycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position,Vector3.down,0.15f);
         if (raycastResult) onGround = true;
+    }
+    private bool onWall = false;
+    private void WallCheck(Vector3 direction)
+    {
+        bool raycastResult = Physics.Raycast(pms.airMovementSettings.WallRaycastOrigin.position, direction, 0.75f);
+        if (raycastResult) onWall = true;
+        else onWall = false;
+        if (onWall) { Debug.Log($"On wall: {timeOnWall}"); }
+    }
+
+    private float WallGravityCurve(float t)
+    {
+        return Mathf.Clamp01(t);
     }
     public StateMachineNode Clone() => new InAirState();
 }

@@ -58,7 +58,9 @@ public struct AirMovementSettings
 {
     public float movementSpeed;
     public float gravity;
-    public Transform RaycastOrigin;
+    public float wallGravity;
+    public Transform GroundRaycastOrigin;
+    public Transform WallRaycastOrigin;
 }
 
 [System.Serializable]
@@ -67,5 +69,8 @@ public struct DashSettings
     public float dashSpeed;
     public float dashExitSpeed;
     public float dashTime;
+    public float dashJumpForce;
+    public float dashJumpExitSpeed;
+    public float dashExitUpwardsVelocity;
 }
 

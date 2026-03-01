@@ -18,4 +18,6 @@ public interface StateMachineNode
     public void ConditionUpdate(object invoker);
 
     public StateMachineNode Clone();
+
+    public string Name { get; }
 }

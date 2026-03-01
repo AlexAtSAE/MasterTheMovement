@@ -35,14 +35,14 @@ public class InputBufferManager : MonoBehaviour
 
     public static void SetMappingContext(InputMappingContext mappingContext)
     {
-        Debug.Log("SetMappingContext");
+        //Debug.Log("SetMappingContext");
         if (instance == null)
         {
             Debug.Log("mapping context is null");
             return;
         }
-        foreach (var mapping in mappingContext.keyNameMapping)
-            Debug.Log("Reading "+mapping.Name+ " Key: "+mapping.Key);
+        //foreach (var mapping in mappingContext.keyNameMapping)
+        //    Debug.Log("Reading "+mapping.Name+ " Key: "+mapping.Key);
         instance.mappingContext = mappingContext;
     }
 }
