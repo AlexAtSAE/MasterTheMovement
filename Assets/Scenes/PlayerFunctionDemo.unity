@@ -1103,6 +1103,14 @@ PrefabInstance:
       propertyPath: dashSettings.dashExitUpwardsVelocity
       value: 0.1
       objectReference: {fileID: 0}
+    - target: {fileID: 6992613602435257078, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
+      propertyPath: mouseSensitivity.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6992613602435257078, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
+      propertyPath: mouseSensitivity.y
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7733987966364076202, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: m_Name
       value: Player

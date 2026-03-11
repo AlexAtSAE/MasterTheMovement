@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class PlayerRotation : MonoBehaviour
 {
@@ -43,5 +44,7 @@ public class PlayerRotation : MonoBehaviour
         cameraAnglePitch = Mathf.Clamp(cameraAnglePitch, -75f, 80f);
         cam.rotation = Quaternion.Euler(-cameraAnglePitch, cameraAngleYaw, 0);
         pms.transform.rotation = Quaternion.Euler(0, cameraAngleYaw, 0);
+
+        
     }
 }
