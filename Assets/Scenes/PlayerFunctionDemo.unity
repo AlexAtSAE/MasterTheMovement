@@ -621,8 +621,16 @@ PrefabInstance:
       value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
+      propertyPath: dashSettings.dashJumpForce
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: airMovementSettings.gravity
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
+      propertyPath: dashSettings.dashJumpExitSpeed
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: airMovementSettings.movementSpeed

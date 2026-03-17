@@ -1,4 +1,3 @@
-using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class DashState : StateMachineNode
@@ -63,7 +62,7 @@ public class DashState : StateMachineNode
 
     public void PhysicsTick(object invoker)
     {
-        //if (!pressedJump) pressedJump = InputBuffer.GetKeyDown("Jump");
+        if (!pressedJump) pressedJump = pms.JumpInput;
         pms.GetComponent<Rigidbody>().linearVelocity = new Vector3(Direction.x,0,Direction.z) * pms.dashSettings.dashSpeed;
     }
 

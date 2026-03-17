@@ -20,4 +20,5 @@ public interface StateMachineNode
     public StateMachineNode Clone();
 
     public string Name { get; }
+
 }

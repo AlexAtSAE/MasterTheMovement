@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,6 +15,7 @@ public class PlayerController : MonoBehaviour
     {
         currentState = new NullState();
         currentState.EnterState(this,currentState);
+        
     }
 
     void Update()
