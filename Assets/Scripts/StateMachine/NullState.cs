@@ -7,8 +7,8 @@ public class NullState : StateMachineNode
     public string Name { get { return "NullState"; } }
     public void ConditionUpdate(object invoker)
     {
-        if (!(invoker is PlayerMovementScript)) return;
-        PlayerMovementScript pms = (PlayerMovementScript)invoker;
+        if (!(invoker is PlayerController)) return;
+        PlayerController pms = (PlayerController)invoker;
         ExitState(pms, this);
         pms.currentState = new GroundState();
         pms.currentState.EnterState(pms, this);

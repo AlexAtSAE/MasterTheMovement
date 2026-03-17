@@ -8,16 +8,17 @@ using UnityEngine.InputSystem;
 public class GroundState : StateMachineNode
 {
     public string Name { get { return "Ground"; } }
-    private PlayerMovementScript pms;
-    private InputMappingContext IMC;
+    private PlayerController pms;
+    private Rigidbody rb;
 
     public void ConditionUpdate(object invoker)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
+        if (invoker is not PlayerController) return;
 
-        if (InputBuffer.GetKeyDown("Jump") || !onGround) pms.ChangeState(new InAirState());
-        if (InputBuffer.GetKeyDown("Dash")) pms.ChangeState(new DashState());
+        if (pms.JumpInput || !onGround) pms.ChangeState(new InAirState());
+        if (!onGround) { Debug.Log("NOT ON THE GROUND"); }
+        if (pms.DashInput) pms.ChangeState(new DashState());
         
 
     }
@@ -25,17 +26,16 @@ public class GroundState : StateMachineNode
     public void EnterState(object invoker, StateMachineNode fromState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
-        pms = (PlayerMovementScript)invoker;
-        IMC = InputBufferManager.instance.GroundIMC;
-        InputBufferManager.SetMappingContext(IMC);
+        if (invoker is not PlayerController) return;
+        pms = (PlayerController)invoker;
+        rb = pms.GetComponent<Rigidbody>();
 
     }
 
     public void ExitState(object invoker, StateMachineNode toState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
+        if (invoker is not PlayerController) return;
 
     }
 
@@ -46,19 +46,15 @@ public class GroundState : StateMachineNode
 
     public void PhysicsTick(object invoker)
     {   
-        Rigidbody rb = pms.rigidbody;
+        
         GroundCheck();
-        float forwardInput = InputBuffer.GetKey("Up")  ? 1 : 0;
-        float downInput = InputBuffer.GetKey("Down")   ? 1 : 0;
-        float rightInput = InputBuffer.GetKey("Right") ? 1 : 0;
-        float leftInput = InputBuffer.GetKey("Left")   ? 1 : 0;
-        float fwd = forwardInput - downInput;
-        float leftright = rightInput - leftInput;
-        Vector3 IntendedVelocity = fwd*pms.transform.forward + leftright*pms.transform.right;
+
+        Vector3 IntendedVelocity = pms.movementInput.y * pms.transform.forward + pms.movementInput.x * pms.transform.right;
+        
         rb.linearVelocity = new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z).normalized*pms.movementSettings.movementSpeed;
 
 
-        bool jumpInput = InputBuffer.GetKeyDown("Jump");
+        bool jumpInput = pms.JumpInput;
         if (jumpInput) rb.linearVelocity = rb.linearVelocity + new Vector3(0, pms.jumpSettings.jumpForce,0);
 
     }
@@ -67,7 +63,7 @@ public class GroundState : StateMachineNode
 
     private void GroundCheck()
     {
-        bool ledgeRaycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.25f);
+        bool ledgeRaycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down , 0.15f);
         if (!ledgeRaycastResult) { onGround = false; return; }
 
         Ray ray = new Ray(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.05f);

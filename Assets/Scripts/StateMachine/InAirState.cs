@@ -4,31 +4,28 @@ using UnityEngine.XR;
 public class InAirState : StateMachineNode
 {
     public string Name { get { return "InAir"; }}
-    private PlayerMovementScript pms;
-    private InputMappingContext IMC;
+    private PlayerController pms;
   
 
     public void ConditionUpdate(object invoker)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
+        if (invoker is not PlayerController) return;
         if (onGround) pms.ChangeState(new GroundState());
-        if (InputBuffer.GetKeyDown("Dash")) pms.ChangeState(new DashState());
+        if (pms.DashInput) pms.ChangeState(new DashState());
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
-        pms = (PlayerMovementScript)invoker;
-        IMC = InputBufferManager.instance.GroundIMC;
-        InputBufferManager.SetMappingContext(IMC);
+        if (invoker is not PlayerController) return;
+        pms = (PlayerController)invoker;
     }
 
     public void ExitState(object invoker, StateMachineNode toState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
+        if (invoker is not PlayerController) return;
 
 
     }
@@ -41,23 +38,17 @@ public class InAirState : StateMachineNode
 
     public void PhysicsTick(object invoker)
     {
-        
 
 
-        float forwardInput = InputBuffer.GetKey("Up") ? 1 : 0;
-        float downInput = InputBuffer.GetKey("Down") ? 1 : 0;
-        float rightInput = InputBuffer.GetKey("Right") ? 1 : 0;
-        float leftInput = InputBuffer.GetKey("Left") ? 1 : 0;
-        float fwd = forwardInput - downInput;
-        float leftright = rightInput - leftInput;
-        Vector3 IntendedDirection = fwd * pms.transform.forward + leftright * pms.transform.right;
+
+        Vector3 IntendedDirection = pms.movementInput.y * pms.transform.forward + pms.movementInput.x * pms.transform.right;
 
         Vector3 IntendedVelocity = IntendedDirection.normalized * pms.airMovementSettings.movementSpeed; //the Input from the player
-        pms.rigidbody.linearVelocity += new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z);
+        pms.GetComponent<Rigidbody>().linearVelocity += new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z);
 
-        if(pms.rigidbody.linearVelocity.y<0)WallCheck(IntendedDirection);
-        if(onWall) pms.rigidbody.linearVelocity += Vector3.down*pms.airMovementSettings.wallGravity * WallGravityCurve(timeOnWall);
-        else pms.rigidbody.linearVelocity += Vector3.down * pms.airMovementSettings.gravity;
+        if (pms.GetComponent<Rigidbody>().linearVelocity.y < 0) WallCheck(IntendedDirection);
+        if (onWall) pms.GetComponent<Rigidbody>().linearVelocity += Vector3.down * pms.airMovementSettings.wallGravity * WallGravityCurve(timeOnWall);
+        else pms.GetComponent<Rigidbody>().linearVelocity += Vector3.down * pms.airMovementSettings.gravity;
         GroundCheck();
 
 

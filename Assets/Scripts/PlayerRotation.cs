@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Pool;
 
 public class PlayerRotation : MonoBehaviour
@@ -9,11 +10,11 @@ public class PlayerRotation : MonoBehaviour
     public Vector2 mouseSensitivity;
     public Transform cam;
     public Transform bodyTransform;
-    private PlayerMovementScript pms;
+    private PlayerController pms;
 
     private void Start()
     {
-        pms= GetComponent<PlayerMovementScript>();
+        pms= GetComponent<PlayerController>();
         LockCamera();
     }
 
@@ -35,10 +36,14 @@ public class PlayerRotation : MonoBehaviour
     }
     float cameraAnglePitch;
     float cameraAngleYaw;
+    Vector2 cameraInputValue;
+    public void LookEvent(InputAction.CallbackContext context)
+    {
+        cameraInputValue = context.ReadValue<Vector2>();
+    }
+
     void RotateCamera()
     {
-        
-        Vector2 cameraInputValue = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
         cameraAnglePitch += cameraInputValue.y * mouseSensitivity.y;
         cameraAngleYaw += cameraInputValue.x * mouseSensitivity.x;
         cameraAnglePitch = Mathf.Clamp(cameraAnglePitch, -75f, 80f);

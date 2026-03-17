@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEditor.Timeline.Actions;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class PlayerMovementScript : MonoBehaviour
+public class PlayerController : MonoBehaviour
 {
-    public Rigidbody rigidbody { get; private set; }
+    
     public StateMachineNode currentState;
 
     
@@ -16,7 +17,6 @@ public class PlayerMovementScript : MonoBehaviour
     public DashSettings dashSettings;
     void Start()
     {
-        rigidbody = GetComponent<Rigidbody>();
         currentState = new NullState();
         currentState.EnterState(this,currentState);
     }
@@ -29,6 +29,10 @@ public class PlayerMovementScript : MonoBehaviour
     {
         currentState.PhysicsTick(this);
         currentState.ConditionUpdate(this);
+        ResetVariables();
+
+
+        //Debug.Log($"Jump: {JumpInput}, Dash: {DashInput}");
     }
 
     public void ChangeState(StateMachineNode toState)
@@ -38,6 +42,24 @@ public class PlayerMovementScript : MonoBehaviour
         toState.EnterState(this, currentState);
         currentState = toState;
     }
+
+    private void ResetVariables()
+    {
+        DashInput = false;
+        JumpInput = false;
+    }
+    public Vector2 movementInput { get; private set; }
+    public void MovementEvent(InputAction.CallbackContext context) => movementInput = context.ReadValue<Vector2>();
+    
+    public bool JumpInput { get; private set; }
+    public void JumpEvent(InputAction.CallbackContext context) => JumpInput = context.performed; 
+
+    public bool DashInput { get; private set; }
+    // public void DashEvent(InputAction.CallbackContext context) => DashInput = context.performed;
+    public void DashEvent(InputAction.CallbackContext context) => DashInput = context.performed; 
+
+
+
 
 }
 

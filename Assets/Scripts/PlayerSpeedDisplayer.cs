@@ -5,11 +5,11 @@ public class PlayerSpeedDisplayer : MonoBehaviour
 {
     public TextMeshProUGUI textMeshPro;
     Rigidbody rb;
-    PlayerMovementScript pms;
+    PlayerController pms;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        pms = GetComponent<PlayerMovementScript>();
+        pms = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame

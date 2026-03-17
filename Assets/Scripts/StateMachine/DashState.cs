@@ -4,8 +4,7 @@ using UnityEngine;
 public class DashState : StateMachineNode
 {
     public string Name { get { return "Dash"; } }
-    private PlayerMovementScript pms;
-    private InputMappingContext IMC;
+    private PlayerController pms;
     private StateMachineNode previousState;
     bool pressedJump = false;
     Vector3 Direction;
@@ -13,7 +12,7 @@ public class DashState : StateMachineNode
     public void ConditionUpdate(object invoker)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
+        if (invoker is not PlayerController) return;
         if (timeSpent > pms.dashSettings.dashTime)
         {
             //pms.ChangeState(previousState);
@@ -24,34 +23,30 @@ public class DashState : StateMachineNode
     public void EnterState(object invoker, StateMachineNode fromState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
-        pms = (PlayerMovementScript)invoker;
-        IMC = InputBufferManager.instance.GroundIMC;
-        InputBufferManager.SetMappingContext(IMC);
+        if (invoker is not PlayerController) return;
+        pms = (PlayerController)invoker;
         previousState = fromState.Clone();
-        float forwardInput = InputBuffer.GetKey("Up") ? 1 : 0;
-        float downInput = InputBuffer.GetKey("Down") ? 1 : 0;
-        float rightInput = InputBuffer.GetKey("Right") ? 1 : 0;
-        float leftInput = InputBuffer.GetKey("Left") ? 1 : 0;
-        float fwd = forwardInput - downInput;
-        float leftright = rightInput - leftInput;
+        Vector2 InputDirection = pms.movementInput;
+        float fwd = InputDirection.y;
+        float leftright = InputDirection.x;
+
         if (fwd == 0 && leftright == 0) Direction = pms.transform.forward;
         else Direction = fwd * pms.transform.forward + leftright * pms.transform.right;
-        Direction=Direction.normalized;
+        Direction = Direction.normalized;
     }
 
     public void ExitState(object invoker, StateMachineNode toState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerMovementScript) return;
+        if (invoker is not PlayerController) return;
         if (pressedJump && previousState is GroundState)
         {
-            pms.rigidbody.linearVelocity = new Vector3(pms.rigidbody.linearVelocity.x, 0, pms.rigidbody.linearVelocity.z).normalized
+            pms.GetComponent<Rigidbody>().linearVelocity = new Vector3(pms.GetComponent<Rigidbody>().linearVelocity.x, 0, pms.GetComponent<Rigidbody>().linearVelocity.z).normalized
             * pms.dashSettings.dashJumpExitSpeed + Vector3.up * pms.dashSettings.dashJumpForce;
         }
         else 
         {
-            pms.rigidbody.linearVelocity = new Vector3(pms.rigidbody.linearVelocity.x, 0, pms.rigidbody.linearVelocity.z).normalized
+            pms.GetComponent<Rigidbody>().linearVelocity = new Vector3(pms.GetComponent<Rigidbody>().linearVelocity.x, 0, pms.GetComponent<Rigidbody>().linearVelocity.z).normalized
                 * pms.dashSettings.dashExitSpeed + Vector3.up * pms.dashSettings.dashExitUpwardsVelocity;
         }
         
@@ -68,8 +63,8 @@ public class DashState : StateMachineNode
 
     public void PhysicsTick(object invoker)
     {
-        if (!pressedJump) pressedJump = InputBuffer.GetKeyDown("Jump");
-        pms.rigidbody.linearVelocity = new Vector3(Direction.x,0,Direction.z) * pms.dashSettings.dashSpeed;
+        //if (!pressedJump) pressedJump = InputBuffer.GetKeyDown("Jump");
+        pms.GetComponent<Rigidbody>().linearVelocity = new Vector3(Direction.x,0,Direction.z) * pms.dashSettings.dashSpeed;
     }
 
     public StateMachineNode Clone() => new DashState();
