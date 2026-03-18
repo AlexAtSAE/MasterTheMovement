@@ -9,9 +9,7 @@ public class NullState : StateMachineNode
     {
         if (!(invoker is PlayerController)) return;
         PlayerController pms = (PlayerController)invoker;
-        ExitState(pms, this);
-        pms.currentState = new GroundState();
-        pms.currentState.EnterState(pms, this);
+        pms.ChangeState(new InAirState());
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)

@@ -38,14 +38,15 @@ public class DashState : StateMachineNode
     {
         if (invoker == null) return;
         if (invoker is not PlayerController) return;
+        Rigidbody rb = pms.GetComponent<Rigidbody>();
         if (pressedJump && previousState is GroundState)
         {
-            pms.GetComponent<Rigidbody>().linearVelocity = new Vector3(pms.GetComponent<Rigidbody>().linearVelocity.x, 0, pms.GetComponent<Rigidbody>().linearVelocity.z).normalized
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).normalized
             * pms.dashSettings.dashJumpExitSpeed + Vector3.up * pms.dashSettings.dashJumpForce;
         }
         else 
         {
-            pms.GetComponent<Rigidbody>().linearVelocity = new Vector3(pms.GetComponent<Rigidbody>().linearVelocity.x, 0, pms.GetComponent<Rigidbody>().linearVelocity.z).normalized
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).normalized
                 * pms.dashSettings.dashExitSpeed + Vector3.up * pms.dashSettings.dashExitUpwardsVelocity;
         }
         

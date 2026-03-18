@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     
-    public StateMachineNode currentState;
+    public StateMachineNode currentState { get; private set; }
 
     
     public JumpSettings jumpSettings;
@@ -27,9 +27,6 @@ public class PlayerController : MonoBehaviour
         currentState.PhysicsTick(this);
         currentState.ConditionUpdate(this);
         ResetVariables();
-
-
-        //Debug.Log($"Jump: {JumpInput}, Dash: {DashInput}");
     }
 
     public void ChangeState(StateMachineNode toState)

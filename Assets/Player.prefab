@@ -563,7 +563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bb1d69ca608d9e47950c26b776adf5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: {x: 2, y: 2}
+  mouseSensitivity: {x: 0.1, y: 0.1}
   cam: {fileID: 2224309726328603113}
   bodyTransform: {fileID: 4414944051268353983}
 --- !u!114 &4482581339257139520
@@ -586,14 +586,14 @@ MonoBehaviour:
     movementSpeed: 0.9
     gravity: 1.5
     wallGravity: 0.33
-    GroundRaycastOrigin: {fileID: 602360388215230862}
-    WallRaycastOrigin: {fileID: 1043909398108812300}
+    GroundRaycastOrigin: {fileID: 0}
+    WallRaycastOrigin: {fileID: 0}
   dashSettings:
     dashSpeed: 150
     dashExitSpeed: 50
     dashTime: 0.1
-    dashJumpForce: 20
-    dashJumpExitSpeed: 50
+    dashJumpForce: 40
+    dashJumpExitSpeed: 150
     dashExitUpwardsVelocity: 2
 --- !u!114 &8520966468179355956
 MonoBehaviour:
