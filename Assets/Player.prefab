@@ -578,6 +578,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36dc5e5b23447504d9cc15725688ec9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerDetails:
+    capsuleHeight: 0
+    capsuleRadius: 0
+    origin: {x: 0, y: 0, z: 0}
   jumpSettings:
     jumpForce: 40
   movementSettings:

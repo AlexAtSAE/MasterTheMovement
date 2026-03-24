@@ -6,11 +6,13 @@ public class PlayerController : MonoBehaviour
     
     public StateMachineNode currentState { get; private set; }
 
-    
+    public PlayerDetails playerDetails;
     public JumpSettings jumpSettings;
     public MovementSettings movementSettings;
     public AirMovementSettings airMovementSettings;
     public DashSettings dashSettings;
+    public Rigidbody rigidbody { get => GetComponent<Rigidbody>(); private set { } }
+
     void Start()
     {
         currentState = new NullState();
@@ -88,5 +90,13 @@ public struct DashSettings
     public float dashJumpForce;
     public float dashJumpExitSpeed;
     public float dashExitUpwardsVelocity;
+}
+
+[System.Serializable]
+public struct PlayerDetails
+{
+    public float capsuleHeight;
+    public float capsuleRadius;
+    public Vector3 origin;
 }
 

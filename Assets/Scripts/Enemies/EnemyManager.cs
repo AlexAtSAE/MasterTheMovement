@@ -4,10 +4,11 @@ using UnityEngine.Pool;
 public class EnemyManager : MonoBehaviour
 {
    public static EnemyManager Instance;
+    private ObjectPool<PooledEnemy> objectPool;
     void Awake()
     {
         Instance = this;
-        ObjectPool<PooledEnemy> objectPool = new ObjectPool<PooledEnemy>
+        objectPool = new ObjectPool<PooledEnemy>
             (
             createFunc: CreateItem,
             actionOnGet: OnGet,
@@ -17,6 +18,7 @@ public class EnemyManager : MonoBehaviour
             defaultCapacity: 10,
             maxSize: 50
             );
+        DontDestroyOnLoad(this);
     }
     PooledEnemy CreateItem()
     {
