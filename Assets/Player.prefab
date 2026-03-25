@@ -579,19 +579,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerDetails:
-    capsuleHeight: 0
-    capsuleRadius: 0
+    capsuleHeight: 2
+    capsuleRadius: 0.5
     origin: {x: 0, y: 0, z: 0}
   jumpSettings:
     jumpForce: 40
-  movementSettings:
+  groundSettings:
     movementSpeed: 30
+    maxSlopeAngle: 30
+    slidingAcceleration: 0.33
   airMovementSettings:
     movementSpeed: 0.9
     gravity: 1.5
-    wallGravity: 0.33
-    GroundRaycastOrigin: {fileID: 0}
-    WallRaycastOrigin: {fileID: 0}
+    wallGravity: 2.23
+    GroundRaycastOrigin: {fileID: 602360388215230862}
+    WallRaycastOrigin: {fileID: 1043909398108812300}
   dashSettings:
     dashSpeed: 150
     dashExitSpeed: 50

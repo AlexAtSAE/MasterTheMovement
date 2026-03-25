@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
 
     public PlayerDetails playerDetails;
     public JumpSettings jumpSettings;
-    public MovementSettings movementSettings;
+    public GroundSettings groundSettings;
     public AirMovementSettings airMovementSettings;
     public DashSettings dashSettings;
     public Rigidbody rigidbody { get => GetComponent<Rigidbody>(); private set { } }
@@ -66,9 +66,11 @@ public struct JumpSettings
 }
 
 [System.Serializable]
-public struct MovementSettings
+public struct GroundSettings
 {
     public float movementSpeed;
+    public float maxSlopeAngle;
+    public float slidingAcceleration;
 }
 
 [System.Serializable]

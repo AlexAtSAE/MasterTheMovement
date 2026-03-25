@@ -44,7 +44,6 @@ public class GroundState : StateMachineNode
 
 
     float skinWidth = 0.015f;
-    float maxSlopeAngle = 60f;
 
     public void PhysicsTick(object invoker)
     {
@@ -52,7 +51,7 @@ public class GroundState : StateMachineNode
         GroundCheck();
 
         Vector3 IntendedVelocity = (pms.movementInput.y * pms.transform.forward + pms.movementInput.x * pms.transform.right).normalized;
-        Vector3 iVel = new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z).normalized * pms.movementSettings.movementSpeed;
+        Vector3 iVel = new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z).normalized * pms.groundSettings.movementSpeed;
        
 
         float capsulePointOffset = pms.playerDetails.capsuleHeight / 2 - pms.playerDetails.capsuleRadius;
@@ -60,9 +59,13 @@ public class GroundState : StateMachineNode
         Vector3 capsulePointB = pms.transform.position + Vector3.down * capsulePointOffset;
 
         RaycastHit hit;
-        if (Physics.CapsuleCast(capsulePointA, capsulePointB,pms.playerDetails.capsuleRadius-skinWidth, iVel.normalized, out hit, pms.playerDetails.capsuleRadius + skinWidth) 
-            && Vector3.Angle(Vector3.up,hit.normal) >= maxSlopeAngle)
+        bool capsuleCast = Physics.CapsuleCast(capsulePointA, capsulePointB, pms.playerDetails.capsuleRadius - skinWidth, iVel.normalized, out hit, pms.playerDetails.capsuleRadius + skinWidth);
+        
+        Debug.Log("ANGFLE:" + Vector3.Angle(Vector3.up, GroundNormal));
+        if (capsuleCast && Vector3.Angle(Vector3.up,hit.normal) >= pms.groundSettings.maxSlopeAngle)
         {
+            //Wall logic
+            Debug.Log("angle thing");
             Debug.DrawRay(hit.point, Vector3.up,Color.blue,0.1f);
             Vector3 snapToSurface = iVel.normalized * (hit.distance - skinWidth);
             Vector3 leftOver = iVel - snapToSurface;
@@ -79,14 +82,14 @@ public class GroundState : StateMachineNode
                     );
                 float mag = leftOver.magnitude;
                 leftOver = Vector3.ProjectOnPlane(leftOver, hit.normal).normalized;
-                leftOver *= mag;
-                leftOver *= scale;
+                //leftOver *= mag;
+                //leftOver *= scale;
             }
-            rb.linearVelocity = leftOver;
+            rb.linearVelocity += leftOver*pms.groundSettings.slidingAcceleration;
         }
         else
         {
-            Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.transform.position, Vector3.down, out hit, 0.1f);
+            Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.transform.position, Vector3.down, out hit, 0.1f + pms.playerDetails.capsuleRadius*(1/Mathf.Cos(Mathf.Deg2Rad*(Vector3.Angle(Vector3.up, hit.normal))))); //make the distance be radius * sec(angle) + clarification
             Vector3 newVel = Vector3.ProjectOnPlane(iVel, hit.normal);
             Debug.DrawRay(pms.transform.position, newVel,Color.green,0.1f);
             rb.linearVelocity = newVel;
@@ -100,17 +103,19 @@ public class GroundState : StateMachineNode
 
     }
     private bool onGround = true;
-    private Vector3 Ground = new Vector3();
+    private Vector3 GroundNormal = new Vector3();
 
     private void GroundCheck()
     {
-        bool ledgeRaycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down , 0.15f);
+        RaycastHit hit;
+        bool ledgeRaycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down ,out hit, 0.15f);
+        GroundNormal = hit.normal;
         if (!ledgeRaycastResult) { onGround = false; return; }
 
-        Ray ray = new Ray(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.05f);
+        /*Ray ray = new Ray(pms.airMovementSettings.GroundRaycastOrigin.position, Vector3.down * 0.05f);
         RaycastHit hit;
         bool raycastResult = Physics.Raycast(ray, out hit);
-        Ground = hit.point;
+        Ground = hit.point;*/
     }
 
 
