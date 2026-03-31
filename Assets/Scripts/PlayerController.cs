@@ -69,6 +69,8 @@ public struct JumpSettings
 public struct GroundSettings
 {
     public float movementSpeed;
+    public float movementAcceleration;
+    public float movementDeceleration;
     public float maxSlopeAngle;
     public float slidingAcceleration;
 }

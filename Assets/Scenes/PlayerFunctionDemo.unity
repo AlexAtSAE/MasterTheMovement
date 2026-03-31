@@ -574,7 +574,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4414944051268353983, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.22
+      value: 1.65
       objectReference: {fileID: 0}
     - target: {fileID: 4414944051268353983, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: m_LocalPosition.z
@@ -671,6 +671,14 @@ PrefabInstance:
     - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: groundSettings.slidingAcceleration
       value: 0.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
+      propertyPath: groundSettings.movementAcceleration
+      value: 6.24
+      objectReference: {fileID: 0}
+    - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
+      propertyPath: groundSettings.movementDeceleration
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 4482581339257139520, guid: be7d9e1464f44394e8a61ed4d638fed7, type: 3}
       propertyPath: dashSettings.dashExitUpwardsVelocity

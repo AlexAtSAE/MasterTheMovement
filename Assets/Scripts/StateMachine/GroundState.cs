@@ -15,7 +15,7 @@ public class GroundState : StateMachineNode
         if (invoker is not PlayerController) return;
 
         if (pms.JumpInput || !onGround) pms.ChangeState(new InAirState());
-        if (!onGround) { Debug.Log("NOT ON THE GROUND"); }
+        //if (!onGround) { Debug.Log("NOT ON THE GROUND"); }
         if (pms.DashInput) pms.ChangeState(new DashState());
         
 
@@ -61,11 +61,10 @@ public class GroundState : StateMachineNode
         RaycastHit hit;
         bool capsuleCast = Physics.CapsuleCast(capsulePointA, capsulePointB, pms.playerDetails.capsuleRadius - skinWidth, iVel.normalized, out hit, pms.playerDetails.capsuleRadius + skinWidth);
         
-        Debug.Log("ANGFLE:" + Vector3.Angle(Vector3.up, GroundNormal));
+        
         if (capsuleCast && Vector3.Angle(Vector3.up,hit.normal) >= pms.groundSettings.maxSlopeAngle)
         {
             //Wall logic
-            Debug.Log("angle thing");
             Debug.DrawRay(hit.point, Vector3.up,Color.blue,0.1f);
             Vector3 snapToSurface = iVel.normalized * (hit.distance - skinWidth);
             Vector3 leftOver = iVel - snapToSurface;
@@ -85,14 +84,21 @@ public class GroundState : StateMachineNode
                 //leftOver *= mag;
                 //leftOver *= scale;
             }
-            rb.linearVelocity += leftOver*pms.groundSettings.slidingAcceleration;
+            ForcePlayer(pms.rigidbody.linearVelocity + leftOver * pms.groundSettings.slidingAcceleration);
+            //rb.linearVelocity += leftOver*pms.groundSettings.slidingAcceleration;
         }
         else
         {
             Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.transform.position, Vector3.down, out hit, 0.1f + pms.playerDetails.capsuleRadius*(1/Mathf.Cos(Mathf.Deg2Rad*(Vector3.Angle(Vector3.up, hit.normal))))); //make the distance be radius * sec(angle) + clarification
             Vector3 newVel = Vector3.ProjectOnPlane(iVel, hit.normal);
             Debug.DrawRay(pms.transform.position, newVel,Color.green,0.1f);
-            rb.linearVelocity = newVel;
+            if(!IntendedVelocity.Equals(Vector3.zero))
+                ForcePlayer(newVel);
+            else
+            {
+                //DeceleratePlayer
+                pms.rigidbody.linearVelocity *= pms.groundSettings.movementDeceleration;
+            }
         }
 
 
@@ -116,6 +122,14 @@ public class GroundState : StateMachineNode
         RaycastHit hit;
         bool raycastResult = Physics.Raycast(ray, out hit);
         Ground = hit.point;*/
+    }
+    private void ForcePlayer(Vector3 TargetVelocity)
+    {
+        rb.linearVelocity += TargetVelocity.normalized*pms.groundSettings.movementAcceleration;
+        if(rb.linearVelocity.magnitude > pms.groundSettings.movementSpeed)
+        {
+            rb.linearVelocity = TargetVelocity.normalized*pms.groundSettings.movementSpeed;
+        }
     }
 
 

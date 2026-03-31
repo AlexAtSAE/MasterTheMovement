@@ -58,8 +58,8 @@ public class InAirState : StateMachineNode
     private bool onGround = false;
     private void GroundCheck()
     {
-        bool raycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position,Vector3.down,0.15f);
-        if (raycastResult) onGround = true;
+        bool raycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position,Vector3.down,0.25f);
+        if (raycastResult) { onGround = true; }
     }
     private bool onWall = false;
     private void WallCheck(Vector3 direction)
