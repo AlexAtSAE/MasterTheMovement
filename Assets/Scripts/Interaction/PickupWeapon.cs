@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PickupWeapon : MonoBehaviour, IInteractable
 {
+    public string weaponName; //PlayerWeapon_0 for pistol
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,10 +18,13 @@ public class PickupWeapon : MonoBehaviour, IInteractable
     public void BeginInteract(object interactor)
     {
         Debug.Log("Begin interact");
+        PlayerPrefs.SetInt(weaponName, 1);
+        
     }
     public void EndInteract(object interactor)
     {
         Debug.Log("End Interact");
+        Destroy(gameObject);
     }
 
 }

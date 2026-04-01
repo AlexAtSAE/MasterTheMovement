@@ -27,12 +27,17 @@ public class PlayerInteractScript : MonoBehaviour
         {
             
             RaycastHit hit;
-            bool raycastHit = Physics.Raycast(raycastFrom.position, (interactingWithObject.transform.position - raycastFrom.position).normalized, out hit, interactRange);
+            //bool raycastHit = Physics.Raycast(raycastFrom.position, (interactingWithObject.transform.position - raycastFrom.position).normalized, out hit, interactRange);
+            bool raycastHit = Vector3.Distance(gameObject.transform.position,interactingWithObject.transform.position) < interactRange;
             if (!raycastHit)
             {
-                interactingWith.EndInteract(this);
+                interactingWith?.EndInteract(this);
                 interactingWithObject = null;
                 interactingWith = null;
+            }
+            else
+            {
+                Debug.Log("In range");
             }
         }
         
@@ -40,22 +45,22 @@ public class PlayerInteractScript : MonoBehaviour
     }
     GameObject interactingWithObject;
     IInteractable interactingWith;
+    bool previousInteractVal;
     private void InteractUpdate(bool value)
     {
-        if (!value) return;
         
+        if (value == previousInteractVal) return;
         RaycastHit hit;
         bool raycastHit = Physics.Raycast(raycastFrom.position, raycastFrom.forward, out hit, interactRange);
         if(raycastHit)
         {
             interactingWithObject =     hit.collider.gameObject;
             interactingWith = interactingWithObject.GetComponent<IInteractable>();
-            interactingWith.BeginInteract(this);
-        }
+            if(value) interactingWith?.BeginInteract(this);
+            if(!value) interactingWith?.EndInteract(this);
 
-        
-        
+        }
+        previousInteractVal = value;
     }
 
-    
 }

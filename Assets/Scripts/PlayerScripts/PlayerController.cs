@@ -6,11 +6,11 @@ public class PlayerController : MonoBehaviour
     
     public StateMachineNode currentState { get; private set; }
 
-    public PlayerDetails playerDetails;
-    public JumpSettings jumpSettings;
-    public GroundSettings groundSettings;
-    public AirMovementSettings airMovementSettings;
-    public DashSettings dashSettings;
+    public  PlayerDetails playerDetails;
+    public  JumpSettings jumpSettings;
+    public  GroundSettings groundSettings;
+    public  AirMovementSettings airMovementSettings;
+    public  DashSettings dashSettings;
     public Rigidbody rigidbody { get => GetComponent<Rigidbody>(); private set { } }
 
     void Start()
@@ -102,5 +102,10 @@ public struct PlayerDetails
     public float capsuleHeight;
     public float capsuleRadius;
     public Vector3 origin;
+}
+[System.Serializable]
+public struct ShootingSettings
+{
+    public Transform shootfrom;
 }
 

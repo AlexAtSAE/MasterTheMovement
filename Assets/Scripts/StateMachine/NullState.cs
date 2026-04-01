@@ -8,8 +8,8 @@ public class NullState : StateMachineNode
     public void ConditionUpdate(object invoker)
     {
         if (!(invoker is PlayerController)) return;
-        PlayerController pms = (PlayerController)invoker;
-        pms.ChangeState(new InAirState());
+        PlayerController PlayerController = (PlayerController)invoker;
+        PlayerController.ChangeState(new InAirState());
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)

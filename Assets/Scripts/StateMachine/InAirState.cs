@@ -4,28 +4,27 @@ using UnityEngine.XR;
 public class InAirState : StateMachineNode
 {
     public string Name { get { return "InAir"; }}
-    private PlayerController pms;
+    private PlayerController PlayerController;
   
 
     public void ConditionUpdate(object invoker)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerController) return;
-        if (onGround) pms.ChangeState(new GroundState());
-        if (pms.DashInput) pms.ChangeState(new DashState());
+
+        if (onGround) PlayerController.ChangeState(new GroundState());
+        if (PlayerController.DashInput) PlayerController.ChangeState(new DashState());
     }
 
     public void EnterState(object invoker, StateMachineNode fromState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerController) return;
-        pms = (PlayerController)invoker;
+
+        PlayerController = (PlayerController)invoker;
     }
 
     public void ExitState(object invoker, StateMachineNode toState)
     {
         if (invoker == null) return;
-        if (invoker is not PlayerController) return;
 
 
     }
@@ -41,14 +40,14 @@ public class InAirState : StateMachineNode
 
 
 
-        Vector3 IntendedDirection = pms.movementInput.y * pms.transform.forward + pms.movementInput.x * pms.transform.right;
+        Vector3 IntendedDirection = PlayerController.movementInput.y * PlayerController.transform.forward + PlayerController.movementInput.x * PlayerController.transform.right;
 
-        Vector3 IntendedVelocity = IntendedDirection.normalized * pms.airMovementSettings.movementSpeed; //the Input from the player
-        pms.GetComponent<Rigidbody>().linearVelocity += new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z);
+        Vector3 IntendedVelocity = IntendedDirection.normalized * PlayerController.airMovementSettings.movementSpeed; //the Input from the player
+        PlayerController.GetComponent<Rigidbody>().linearVelocity += new Vector3(IntendedVelocity.x, 0, IntendedVelocity.z);
 
-        if (pms.GetComponent<Rigidbody>().linearVelocity.y < 0) WallCheck(IntendedDirection);
-        if (onWall) pms.GetComponent<Rigidbody>().linearVelocity += Vector3.down * pms.airMovementSettings.wallGravity * WallGravityCurve(timeOnWall);
-        else pms.GetComponent<Rigidbody>().linearVelocity += Vector3.down * pms.airMovementSettings.gravity;
+        if (PlayerController.GetComponent<Rigidbody>().linearVelocity.y < 0) WallCheck(IntendedDirection);
+        if (onWall) PlayerController.GetComponent<Rigidbody>().linearVelocity += Vector3.down * PlayerController.airMovementSettings.wallGravity * WallGravityCurve(timeOnWall);
+        else PlayerController.GetComponent<Rigidbody>().linearVelocity += Vector3.down * PlayerController.airMovementSettings.gravity;
         GroundCheck();
 
 
@@ -58,13 +57,13 @@ public class InAirState : StateMachineNode
     private bool onGround = false;
     private void GroundCheck()
     {
-        bool raycastResult = Physics.Raycast(pms.airMovementSettings.GroundRaycastOrigin.position,Vector3.down,0.25f);
+        bool raycastResult = Physics.Raycast(PlayerController.airMovementSettings.GroundRaycastOrigin.position,Vector3.down,0.25f);
         if (raycastResult) { onGround = true; }
     }
     private bool onWall = false;
     private void WallCheck(Vector3 direction)
     {
-        bool raycastResult = Physics.Raycast(pms.airMovementSettings.WallRaycastOrigin.position, direction, 0.75f);
+        bool raycastResult = Physics.Raycast(PlayerController.airMovementSettings.WallRaycastOrigin.position, direction, 0.75f);
         if (raycastResult) onWall = true;
         else onWall = false;
         if (onWall) { Debug.Log($"On wall: {timeOnWall}"); }

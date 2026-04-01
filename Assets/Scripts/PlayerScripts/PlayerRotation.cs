@@ -7,11 +7,11 @@ public class PlayerRotation : MonoBehaviour
     public Vector2 mouseSensitivity;
     public Transform cam;
     public Transform bodyTransform;
-    private PlayerController pms;
+    private PlayerController PlayerController;
 
     private void Start()
     {
-        pms= GetComponent<PlayerController>();
+        PlayerController= GetComponent<PlayerController>();
         LockCamera();
     }
 
@@ -45,7 +45,7 @@ public class PlayerRotation : MonoBehaviour
         cameraAngleYaw += cameraInputValue.x * mouseSensitivity.x;
         cameraAnglePitch = Mathf.Clamp(cameraAnglePitch, -75f, 80f);
         cam.rotation = Quaternion.Euler(-cameraAnglePitch, cameraAngleYaw, 0);
-        pms.transform.rotation = Quaternion.Euler(0, cameraAngleYaw, 0);
+        PlayerController.transform.rotation = Quaternion.Euler(0, cameraAngleYaw, 0);
 
         
     }
