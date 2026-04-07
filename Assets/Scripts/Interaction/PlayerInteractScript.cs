@@ -35,10 +35,7 @@ public class PlayerInteractScript : MonoBehaviour
                 interactingWithObject = null;
                 interactingWith = null;
             }
-            else
-            {
-                Debug.Log("In range");
-            }
+            
         }
         
 
