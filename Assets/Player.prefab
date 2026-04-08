@@ -926,7 +926,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d41dbd87801151418297076c6603eda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponSystem
-  selectedWeaponIndex: -1
   hand: {fileID: 3218849984238354877}
-  weaponDefinitions:
-  - {fileID: 11400000, guid: b3952c7eb54230248a8a0e62321f7cc4, type: 2}
+  currentWeapon: 0
+  weaponAssetReferences: {fileID: 11400000, guid: e1b84e0b724a3734fac8b24e462225ac, type: 2}

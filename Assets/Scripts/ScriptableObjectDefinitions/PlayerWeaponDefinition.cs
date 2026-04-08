@@ -1,83 +1,69 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "WeaponDefiniton", menuName = "ScriptableObjects/WeaponDefinition")]
-public class PlayerWeaponDefinition : ScriptableObject
+public enum WeaponType
 {
-    public GameObject weaponAsset;
-    public GameObject projectile;
-    public AudioClip fireSound;
-    [SerializeField] public WeaponBehaviours baseBehaviour;
-    public WeaponBehaviour Behaviour {
-        get => GetWeaponBehaviour();
-        private set { } 
-    }
+    Hand,
+    Pistol,
+    Rifle,
+    RocketLauncher
+}
 
-    private WeaponBehaviour GetWeaponBehaviour()
+[CreateAssetMenu(fileName = "WeaponAssetInfo", menuName = "ScriptableObjects/Weapons/WeaponAssetInfo", order = 1)]
+public class WeaponAssetInfo : ScriptableObject
+{
+    public WeaponType type;
+    public string Name;
+    public string Description;
+    public GameObject BulletPrefab;
+    // sound
+    public GameObject WeaponPrefab;
+}
+
+[CreateAssetMenu(fileName = "WeaponAssetReferences", menuName = "ScriptableObjects/Weapons/WeaponAssetReferences", order = 1)]
+public class WeaponAssetReferences : ScriptableObject
+{
+    public WeaponAssetInfo HandInfo;
+    public WeaponAssetInfo PistolInfo;
+    public WeaponAssetInfo RifleInfo;
+    public WeaponAssetInfo RocketLauncherInfo;
+}
+
+public static class WeaponSystem {
+    public delegate void PrimaryShootDelegate(PlayerWeaponSystem pws);
+    public static PrimaryShootDelegate GetPrimaryShoot(WeaponType type)
     {
-        switch (baseBehaviour)
+        switch (type)
         {
-            case WeaponBehaviours.Pistol    : return pistolBehaviour; 
-            default                         : return defaultBehaviour;
+            case WeaponType.Hand:
+                return HandShoot;
+            case WeaponType.Pistol:
+                return PistolShoot;
+            case WeaponType.Rifle:
+                return RifleShoot;
+            case WeaponType.RocketLauncher:
+                return RocketLauncherShoot;
+            default: return (PlayerWeaponSystem pws) =>{ };
         }
     }
-    private PistolBehaviour pistolBehaviour;
-    private WeaponBehaviour defaultBehaviour;
-    public void Init()
+
+    private static void HandShoot(PlayerWeaponSystem pws)
     {
-        pistolBehaviour = new PistolBehaviour(weaponAsset, fireSound, projectile);
-        defaultBehaviour = new WeaponBehaviour(weaponAsset, fireSound, projectile);
+        
     }
-
-
-
-
-}
-
-public enum WeaponBehaviours
-{
-    Pistol
-}
-
-[System.Serializable]
-public class WeaponBehaviour
-{
-    protected GameObject asset;
-    protected AudioClip sound;
-    protected GameObject projectile;
-    public WeaponBehaviour(GameObject asset, AudioClip sound, GameObject projectile)
+    private static void PistolShoot(PlayerWeaponSystem pws) 
     {
-        this.asset = asset;
-        this.sound = sound;
-        this.projectile = projectile;
+        WeaponAssetInfo info = pws.weaponAssetReferences.PistolInfo;
+        GameObject bullet = GameObject.Instantiate(info.BulletPrefab);
+        bullet.transform.position = pws.hand.transform.position;
+        Debug.DrawRay(pws.hand.transform.position, pws.transform.forward*50.0f, Color.red, 0.5f);
     }
+    private static void RifleShoot(PlayerWeaponSystem pws)
+    {
 
-    public virtual void Fire(object source) { }
-}
-[System.Serializable]
-public class PistolBehaviour : WeaponBehaviour
-{
-    public PistolBehaviour(GameObject asset, AudioClip sound, GameObject projectile) : base(asset, sound, projectile){
-        this.asset = asset;
-        this.sound = sound;
-        this.projectile = projectile;
     }
-
-    public override void Fire(object source) {
+    private static void RocketLauncherShoot(PlayerWeaponSystem pws)
+    {
         
-        Transform fromTransform = null;
-        
-        if (source is PlayerWeaponSystem)
-        {
-            PlayerWeaponSystem pws = (PlayerWeaponSystem)source;
-            fromTransform = pws.hand.transform;
-        }
-        if (fromTransform != null) {
-            if (projectile == null) Debug.Log("WHY");
-            GameObject bullet = GameObject.Instantiate(projectile, fromTransform);
-            BulletManager.Instance.RegisterBullet(bullet);
-        }
-        
-        Debug.Log("pow!");
-
     }
 }

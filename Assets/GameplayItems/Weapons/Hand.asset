@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 97fe9f8cf3d92e849bb52934c8a5a804, type: 3}
-  m_Name: Pistol
+  m_Name: Hand
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponDefinition
-  weaponAsset: {fileID: 919132149155446097, guid: 941ab3ef077287048945fd7d7229d21f, type: 3}
-  projectile: {fileID: 2491906264299836167, guid: 48844103fca7a0f4ca2f4d3859790288, type: 3}
-  fireSound: {fileID: 0}
-  baseBehaviour: 0
+  type: 0
+  Name: Unarmed
+  Description: No weapon equipped
+  BulletPrefab: {fileID: 0}
+  WeaponPrefab: {fileID: 2491906264299836167, guid: 48844103fca7a0f4ca2f4d3859790288, type: 3}
