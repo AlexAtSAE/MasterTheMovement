@@ -55,8 +55,10 @@ public static class WeaponSystem {
     {
         Debug.Log("pistol shoot");
         WeaponAssetInfo info = pws.weaponAssetReferences.PistolInfo;
-        GameObject bullet = GameObject.Instantiate(info.BulletPrefab);
-        bullet.transform.position = pws.hand.transform.position;
+        PooledBullet newBullet = BulletManager.GetPool().Get();
+        newBullet.transform.position = pws.hand.transform.position;
+        newBullet.transform.rotation = pws.shootDirection.transform.rotation;
+        
         Debug.DrawRay(pws.hand.transform.position, pws.transform.forward*50.0f, Color.red, 0.5f);
     }
     private static void RifleShoot(PlayerWeaponSystem pws)

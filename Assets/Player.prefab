@@ -867,6 +867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeaponSystem
   hand: {fileID: 3218849984238354877}
+  shootDirection: {fileID: 2224309726328603113}
   currentWeapon: 0
   weaponAssetReferences: {fileID: 11400000, guid: e1b84e0b724a3734fac8b24e462225ac, type: 2}
 --- !u!1001 &5612672477093885346

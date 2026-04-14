@@ -14,6 +14,7 @@ public class PlayerWeaponSystem : MonoBehaviour
 {
     [Header("PlayerInfo")]
     public GameObject hand;
+    public Transform shootDirection;
     public WeaponType currentWeapon = WeaponType.Hand;
     [Space(10)]
     [Header("Weapon Info")]
