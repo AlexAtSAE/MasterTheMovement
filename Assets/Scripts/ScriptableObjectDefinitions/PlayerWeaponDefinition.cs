@@ -49,10 +49,11 @@ public static class WeaponSystem {
 
     private static void HandShoot(PlayerWeaponSystem pws)
     {
-        
+        Debug.Log("hand shoot");
     }
     private static void PistolShoot(PlayerWeaponSystem pws) 
     {
+        Debug.Log("pistol shoot");
         WeaponAssetInfo info = pws.weaponAssetReferences.PistolInfo;
         GameObject bullet = GameObject.Instantiate(info.BulletPrefab);
         bullet.transform.position = pws.hand.transform.position;

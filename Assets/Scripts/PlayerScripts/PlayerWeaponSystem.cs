@@ -33,7 +33,13 @@ public class PlayerWeaponSystem : MonoBehaviour
         //Find next weapon "${PlayerWeapon_{weapon}"
         
         int currentWeaponNumber = (int)currentWeapon;
-        foreach(WeaponType weapontype in WeaponType.GetValues(typeof(WeaponType)))
+        int amountOfWeapons = WeaponType.GetValues(typeof(WeaponType)).Length;
+        currentWeaponNumber = (currentWeaponNumber + 1) % amountOfWeapons;
+        currentWeapon = (WeaponType)currentWeaponNumber;
+        EquipWeapon(GetWeaponInfo(currentWeapon));
+        Debug.Log("Equipped: " + currentWeapon);
+        
+        /*foreach (WeaponType weapontype in WeaponType.GetValues(typeof(WeaponType)))
         {
             bool hasWeapon = PlayerPrefs.GetInt($"PlayerWeapon_{weapontype}",0) == 1;
             if (hasWeapon && weapontype != currentWeapon)
@@ -44,25 +50,36 @@ public class PlayerWeaponSystem : MonoBehaviour
             }
         }
         Debug.Log("Equipped hand ");
-        EquipWeapon(GetWeaponInfo(WeaponType.Hand));
+        EquipWeapon(GetWeaponInfo(WeaponType.Hand));*/
     }
     public void PreviousWeaponEvent(InputAction.CallbackContext context)
     {
-
+        int currentWeaponNumber = (int)currentWeapon;
+        int amountOfWeapons = WeaponType.GetValues(typeof(WeaponType)).Length;
+        currentWeaponNumber = (currentWeaponNumber - 1) % amountOfWeapons;
+        currentWeapon = (WeaponType)currentWeaponNumber;
+        EquipWeapon(GetWeaponInfo(currentWeapon));
+        Debug.Log("Equipped: " + currentWeapon);
 
     }
     private void EquipWeapon(WeaponAssetInfo weaponInfo)
     {
         currentWeapon = weaponInfo.type;
         primaryShootDelegate = WeaponSystem.GetPrimaryShoot(currentWeapon);
-        /*GameObject child = hand.GetComponentInChildren<Transform>().gameObject;
-        if (child != null)  Destroy(child);
-        if (weaponInfo.WeaponPrefab != null)
-        {
-            GameObject weaponInHand = Instantiate(weaponInfo.WeaponPrefab);
-            weaponInHand.transform.parent = hand.transform;
+        /*Transform[] handChildren = hand.GetComponentsInChildren<Transform>();
+        foreach (Transform child in handChildren) {
+            if (child.name != weaponInfo.name) child.gameObject.SetActive(false);
+            else child.gameObject.SetActive(true);
         }*/
 
+        int handChildCount = hand.transform.childCount;
+        Transform[] children = new Transform[handChildCount];
+        for (int i = 0; i < handChildCount; i++)
+        {
+            Transform child = hand.transform.GetChild(i);
+            if (child.name != weaponInfo.name) child.gameObject.SetActive(false);
+            else child.gameObject.SetActive(true);
+        }
 
     }
 
@@ -76,9 +93,7 @@ public class PlayerWeaponSystem : MonoBehaviour
         {
             primaryShootDelegate(this);
         }
-       
     }
-
 
     public static WeaponAssetInfo GetWeaponInfo(WeaponType type)
     {
@@ -88,7 +103,7 @@ public class PlayerWeaponSystem : MonoBehaviour
             case WeaponType.Pistol: return instance.weaponAssetReferences.PistolInfo;
             case WeaponType.Rifle:  return instance.weaponAssetReferences.RifleInfo;
             case WeaponType.RocketLauncher: return instance.weaponAssetReferences.RocketLauncherInfo;
-            default: return new WeaponAssetInfo();
+            default: return instance.weaponAssetReferences.HandInfo;
         }
     }
 }

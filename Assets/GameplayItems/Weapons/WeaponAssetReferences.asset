@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WeaponAssetReferences
   HandInfo: {fileID: 11400000, guid: 1486bc278d3920049bb5918e9be73708, type: 2}
   PistolInfo: {fileID: 11400000, guid: b3952c7eb54230248a8a0e62321f7cc4, type: 2}
-  RifleInfo: {fileID: 0}
-  RocketLauncherInfo: {fileID: 0}
+  RifleInfo: {fileID: 11400000, guid: 1486bc278d3920049bb5918e9be73708, type: 2}
+  RocketLauncherInfo: {fileID: 11400000, guid: 1486bc278d3920049bb5918e9be73708, type: 2}

@@ -14,3 +14,16 @@
  */
 
 #endregion
+
+#region Next time
+
+
+/* To do:
+ * Make rifle and rocket launcher
+ * Make enemy
+ * Do bullet shooting (raycast, need particle figured out)
+ * 
+ * 
+ * 
+ */
+#endregion
