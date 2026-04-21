@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    
+    public static PlayerController instance;
     public StateMachineNode currentState { get; private set; }
 
     public  PlayerDetails playerDetails;
@@ -13,6 +13,10 @@ public class PlayerController : MonoBehaviour
     public  DashSettings dashSettings;
     public Rigidbody rigidbody { get => GetComponent<Rigidbody>(); private set { } }
 
+    private void OnEnable()
+    {
+        instance = this;
+    }
     void Start()
     {
         currentState = new NullState();

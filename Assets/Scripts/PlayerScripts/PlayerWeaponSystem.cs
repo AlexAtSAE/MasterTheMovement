@@ -1,15 +1,12 @@
-using JetBrains.Annotations;
-using System;
-using System.Drawing;
-using System.Runtime.Serialization;
-using System.Xml.Serialization;
-using Unity.VisualScripting;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering;
-
+/*
+ * 
+ * This just mostly doesnt work and is pointless
+ * too much to figure out for now and its just not interesting
+ * every idea had a flaw and it was miserable.
+ * 
+ */
 public class PlayerWeaponSystem : MonoBehaviour
 {
     [Header("PlayerInfo")]

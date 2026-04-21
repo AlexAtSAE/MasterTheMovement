@@ -1,7 +1,4 @@
-using JetBrains.Annotations;
 using UnityEngine;
-using UnityEngine.InputSystem.HID;
-using static UnityEditor.PlayerSettings;
 
 public class GroundState : StateMachineNode
 {

@@ -1,6 +1,6 @@
 {
     "version": 1,
-    "name": "InputSystem_Actions",
+    "name": "InputSystem_Actions 1",
     "maps": [
         {
             "name": "Player",
@@ -338,6 +338,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
+                    "action": "Next",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d87d156a-a53e-47ae-9796-aff20237c8b4",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
                     "action": "Next",
                     "isComposite": false,
                     "isPartOfComposite": false
